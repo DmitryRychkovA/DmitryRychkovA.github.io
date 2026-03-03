@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dmitry Rychkov — Senior Python Backend Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--card:#16161f;--cardh:#1c1c28;--t1:#e8e8ef;--t2:#8888a0;--t3:#55556a;--ac:#6366f1;--al:#818cf8;--ag:rgba(99,102,241,.15);--gn:#22c55e;--gg:rgba(34,197,94,.15);--rg:rgba(244,63,94,.15);--og:rgba(245,158,11,.15);--cg:rgba(6,182,212,.15);--vg:rgba(139,92,246,.15);--bd:#1e1e2e;--bh:#2a2a3e;--r:12px;--rs:8px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* Noise overlay */
+.noise{position:fixed;inset:0;pointer-events:none;z-index:1000;opacity:.03;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Glow orbs */
+.gorb{position:fixed;width:600px;height:600px;border-radius:50%;
+background:radial-gradient(circle,var(--ag) 0%,transparent 70%);
+pointer-events:none;z-index:0;animation:fl 20s ease-in-out infinite}
+.gorb-1{top:-200px;right:-100px}.gorb-2{bottom:-200px;left:-100px;animation-delay:-10s}
+@keyframes fl{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-30px)}66%{transform:translate(-20px,20px)}}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* NAV */
+nav{position:fixed;inset:0 0 auto;z-index:100;padding:16px 0;backdrop-filter:blur(20px);background:rgba(10,10,15,.8);border-bottom:1px solid var(--bd)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--al);text-decoration:none}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links a{color:var(--t2);text-decoration:none;font-size:14px;transition:color .2s}
+.nav-links a:hover{color:var(--t1)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gn)}
+.nav-status::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--gn);animation:pu 2s ease-in-out infinite}
+@keyframes pu{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
+/* Lang toggle */
+.lang-toggle{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:20px;overflow:hidden;cursor:pointer}
+.lang-btn{padding:4px 12px;font-size:12px;font-weight:600;color:var(--t3);background:transparent;border:none;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.lang-btn.active{background:var(--ac);color:#fff;border-radius:20px}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:80px}
+.hero-c{width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:var(--ag);border:1px solid rgba(99,102,241,.2);font-size:13px;font-weight:500;color:var(--al);margin-bottom:32px;animation:fu .6s ease-out}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;animation:fu .6s ease-out .1s both}
+.hero h1 span{background:linear-gradient(135deg,var(--al),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:18px;color:var(--t2);max-width:620px;line-height:1.7;margin-bottom:40px;animation:fu .6s ease-out .2s both}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fu .6s ease-out .3s both}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--rs);font-size:14px;font-weight:500;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.bp{background:var(--ac);color:#fff}.bp:hover{background:var(--al);transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.3)}
+.bg{background:transparent;color:var(--t2);border:1px solid var(--bd)}.bg:hover{color:var(--t1);border-color:var(--bh);background:var(--card)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden;margin-top:80px;animation:fu .6s ease-out .4s both}
+.stat{background:var(--card);padding:32px;text-align:center;transition:background .2s}.stat:hover{background:var(--cardh)}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;margin-bottom:4px}
+.stat-l{font-size:13px;color:var(--t3);text-transform:uppercase;letter-spacing:1px}
+
+/* Sections */
+.sec{padding:120px 0}
+.sec-l{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--al);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.sec-t{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1px;margin-bottom:48px}
+
+/* Skills grid */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px}
+.sc{background:var(--card);border-radius:var(--r);padding:28px;transition:all .2s;border:1px solid transparent}
+.sc:hover{background:var(--cardh);border-color:var(--bd)}
+.si{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.si-b{background:var(--ag)}.si-d{background:var(--gg)}.si-m{background:var(--rg)}
+.si-o{background:var(--og)}.si-a{background:var(--vg)}.si-db{background:var(--cg)}
+.sc h3{font-size:16px;font-weight:600;margin-bottom:10px}
+.skl{display:flex;flex-wrap:wrap;gap:6px}
+.skl span{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);padding:3px 8px;background:rgba(255,255,255,.04);border-radius:4px}
+
+/* Projects grid */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.pc{background:var(--card);border-radius:var(--r);padding:32px;border:1px solid var(--bd);transition:all .3s;position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--al));opacity:0;transition:opacity .3s}
+.pc:hover{border-color:var(--bh);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3)}.pc:hover::before{opacity:1}
+.pc-type{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.pc h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.pc p{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px}
+.pc-e{font-size:28px;margin-bottom:16px;display:block}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:4px 10px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace;background:var(--ag);color:var(--al);border:1px solid rgba(99,102,241,.15)}
+
+/* Timeline */
+.tl{display:flex;flex-direction:column;gap:2px}
+.ti{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:32px;background:var(--card);border-radius:var(--r);transition:all .2s;border:1px solid transparent}
+.ti:hover{background:var(--cardh);border-color:var(--bd)}
+.ti-d{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t3);padding-top:4px}.ti-now{color:var(--gn)}
+.ti-r{font-size:20px;font-weight:600;margin-bottom:4px}
+.ti-c{font-size:14px;color:var(--t2);margin-bottom:16px}
+.ti-desc{color:var(--t2);font-size:15px;line-height:1.7}
+
+/* Contacts */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.cc{display:flex;align-items:center;gap:16px;padding:24px;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:var(--t1);transition:all .2s}
+.cc:hover{background:var(--cardh);border-color:var(--bh);transform:translateY(-2px)}
+.cc-i{width:44px;height:44px;border-radius:10px;background:var(--ag);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.cc-l{font-size:12px;color:var(--t3);margin-bottom:2px}.cc-v{font-size:14px;font-weight:500}
+
+footer{padding:40px 0;border-top:1px solid var(--bd);text-align:center;font-size:13px;color:var(--t3)}
+
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(30px);transition:all .6s ease-out}.rv.vis{opacity:1;transform:translateY(0)}
+
+/* Lang switching */
+[data-lang]{display:none}
+[data-lang].show{display:initial}
+.block-lang{display:none !important}
+.block-lang.show{display:initial !important}
+/* For block elements that need flex/grid when shown */
+.flex-lang{display:none !important}
+.flex-lang.show{display:flex !important}
+.grid-lang{display:none !important}
+.grid-lang.show{display:grid !important}
+
+@media(max-width:768px){
+.nav-links{display:none}
+.stats{grid-template-columns:repeat(2,1fr)}
+.ti{grid-template-columns:1fr;gap:8px}
+.pg{grid-template-columns:1fr}
+.sec{padding:80px 0}
+}
+@media(max-width:480px){
+.stats{grid-template-columns:1fr}
+.hero-actions{flex-direction:column}
+.btn{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="gorb gorb-1"></div>
+<div class="gorb gorb-2"></div>
+
+<!-- NAV -->
+<nav><div class="wrap">
+<a href="#" class="nav-logo">dmitry.dev</a>
+<ul class="nav-links">
+    <li><a href="#about"><span data-lang="en" class="show">About</span><span data-lang="ru">Обо мне</span></a></li>
+    <li><a href="#projects"><span data-lang="en" class="show">Projects</span><span data-lang="ru">Проекты</span></a></li>
+    <li><a href="#experience"><span data-lang="en" class="show">Experience</span><span data-lang="ru">Опыт</span></a></li>
+    <li><a href="#skills"><span data-lang="en" class="show">Stack</span><span data-lang="ru">Стек</span></a></li>
+    <li><a href="#contact"><span data-lang="en" class="show">Contact</span><span data-lang="ru">Контакты</span></a></li>
+</ul>
+<div class="nav-right">
+    <div class="nav-status">
+        <span data-lang="en" class="show">Open to offers</span>
+        <span data-lang="ru">Открыт к предложениям</span>
+    </div>
+    <div class="lang-toggle">
+        <button class="lang-btn active" data-set-lang="en">EN</button>
+        <button class="lang-btn" data-set-lang="ru">RU</button>
+    </div>
+</div>
+</div></nav>
+
+<!-- HERO -->
+<section class="hero"><div class="wrap"><div class="hero-c">
+<div class="hero-badge">
+    <span data-lang="en" class="show">&#x1F3E5; 7+ years &middot; Distributed Systems &middot; MedTech &middot; AI</span>
+    <span data-lang="ru">&#x1F3E5; 7+ лет &middot; Distributed Systems &middot; MedTech &middot; AI</span>
+</div>
+
+<h1>
+    <span data-lang="en" class="show">Dmitry Rychkov<br><span>Senior Python Backend Engineer</span></span>
+    <span data-lang="ru">Дмитрий Рычков<br><span>Senior Python Backend Engineer</span></span>
+</h1>
+
+<p class="hero-desc">
+    <span data-lang="en" class="show">Building scalable backend systems, medical data platforms, and AI-powered solutions. Full development cycle &mdash; from architecture design to production deployment.</span>
+    <span data-lang="ru">Проектирую масштабируемые бэкенд-системы, медицинские платформы и&nbsp;AI&#8209;решения. Полный цикл &mdash; от архитектуры до продакшен-деплоя.</span>
+</p>
+
+<div class="hero-actions">
+    <a href="https://t.me/dmitry_dtr" class="btn bp" target="_blank">&#x2708;&#xFE0F; Telegram</a>
+    <a href="mailto:dmitry.rychkov.a@gmail.com" class="btn bg">&#x1F4E7; Email</a>
+    <a href="https://github.com/DmitryRychkovA" class="btn bg" target="_blank">&#x1F4BB; GitHub</a>
+</div>
+
+<div class="stats">
+    <div class="stat"><div class="stat-v">7+</div><div class="stat-l"><span data-lang="en" class="show">years exp</span><span data-lang="ru">лет опыта</span></div></div>
+    <div class="stat"><div class="stat-v">30+</div><div class="stat-l"><span data-lang="en" class="show">microservices</span><span data-lang="ru">микросервисов</span></div></div>
+    <div class="stat"><div class="stat-v">2K+</div><div class="stat-l"><span data-lang="en" class="show">commits/year</span><span data-lang="ru">коммитов/год</span></div></div>
+    <div class="stat"><div class="stat-v">~8</div><div class="stat-l"><span data-lang="en" class="show">team members</span><span data-lang="ru">чел. в команде</span></div></div>
+</div>
+</div></div></section>
+
+<!-- ABOUT -->
+<section class="sec" id="about"><div class="wrap">
+<div class="sec-l rv">
+    <span data-lang="en" class="show">// About</span>
+    <span data-lang="ru">// Обо мне</span>
+</div>
+<h2 class="sec-t rv">
+    <span data-lang="en" class="show">What I Do</span>
+    <span data-lang="ru">Что я делаю</span>
+</h2>
+<div class="sg">
+    <div class="sc rv"><div class="si si-b">&#x1F3D7;</div><h3><span data-lang="en" class="show">Architecture</span><span data-lang="ru">Архитектура</span></h3><div class="skl"><span>Microservices</span><span>Event-driven</span><span>Celery + RabbitMQ</span><span>High-load pipelines</span><span>Grafana</span></div></div>
+    <div class="sc rv"><div class="si si-m">&#x1F9E0;</div><h3><span data-lang="en" class="show">ML &amp; AI</span><span data-lang="ru">ML и AI</span></h3><div class="skl"><span>ML inference</span><span>DICOM</span><span>LLM integrations</span><span>Local LLMs</span><span>OpenAI API</span><span>LangChain</span></div></div>
+    <div class="sc rv"><div class="si si-d">&#x1F5A5;</div><h3><span data-lang="en" class="show">Desktop &amp; Frontend</span><span data-lang="ru">Desktop и Frontend</span></h3><div class="skl"><span>Qt / QML / PyQt</span><span>React</span><span>TypeScript</span><span data-lang="en" class="show">10+ apps</span><span data-lang="ru">10+ приложений</span></div></div>
+    <div class="sc rv"><div class="si si-a">&#x1F465;</div><h3><span data-lang="en" class="show">Leadership</span><span data-lang="ru">Лидерство</span></h3><div class="skl"><span data-lang="en" class="show">Mentoring ~8 devs</span><span data-lang="ru">Менторинг ~8 чел.</span><span>Code review</span><span data-lang="en" class="show">Arch decisions</span><span data-lang="ru">Архитектурные решения</span><span data-lang="en" class="show">Onboarding</span><span data-lang="ru">Онбординг</span></div></div>
+</div>
+</div></section>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects"><div class="wrap">
+<div class="sec-l rv">// Projects</div>
+<h2 class="sec-t rv">Featured Projects</h2>
+<div class="pg">
+
+<div class="pc rv"><span class="pc-e">&#x1F399;&#xFE0F;</span><div class="pc-type">Production &middot; AI</div><h3>Avatar Voice Clone</h3>
+<p><span data-lang="en" class="show">Production-ready voice cloning service with async processing, React frontend and scalable FastAPI backend.</span><span data-lang="ru">Production-ready сервис клонирования голоса с асинхронной обработкой, React-фронтендом и масштабируемым FastAPI-бэкендом.</span></p>
+<div class="tags"><span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Docker</span><span class="tag">ML</span></div></div>
+
+<div class="pc rv"><span class="pc-e">&#x1F3E5;</span><div class="pc-type">Production &middot; MedTech</div><h3>Medical Image Pipeline</h3>
+<p><span data-lang="en" class="show">Fault-tolerant microservice architecture processing ~1,000 DICOM images/day with async ML inference and distributed task queues.</span><span data-lang="ru">Отказоустойчивая микросервисная архитектура: ~1 000 DICOM-снимков/день, асинхронный ML-inference, распределённые очереди задач.</span></p>
+<div class="tags"><span class="tag">FastAPI</span><span class="tag">Celery</span><span class="tag">RabbitMQ</span><span class="tag">Redis</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span></div></div>
+
+<div class="pc rv"><span class="pc-e">&#x1F916;</span><div class="pc-type">Production &middot; AI</div><h3>Local LLM &amp; AI Integrations</h3>
+<p><span data-lang="en" class="show">End-to-end LLM deployment pipeline: local model hosting, API orchestration, and content generation workflows.</span><span data-lang="ru">End-to-end пайплайн деплоя LLM: хостинг локальных моделей, оркестрация API, воркфлоу генерации контента.</span></p>
+<div class="tags"><span class="tag">LLaMA</span><span class="tag">LangChain</span><span class="tag">OpenAI API</span><span class="tag">FastAPI</span></div></div>
+
+<div class="pc rv"><span class="pc-e">&#x1F3A8;</span><div class="pc-type">Production &middot; AI</div><h3>AI Content Generation</h3>
+<p><span data-lang="en" class="show">Automated image and video generation pipelines with model configuration and fine-tuning.</span><span data-lang="ru">Автоматизированные пайплайны генерации изображений и видео с конфигурацией моделей и файн-тюнингом.</span></p>
+<div class="tags"><span class="tag">ComfyUI</span><span class="tag">Stable Diffusion</span><span class="tag">Python</span></div></div>
+
+<div class="pc rv"><span class="pc-e">&#x1F5A5;&#xFE0F;</span><div class="pc-type">Production &middot; MedTech</div><h3>Clinical Desktop Suite</h3>
+<p><span data-lang="en" class="show">10+ desktop apps for clinical workflows: image viewing, anonymization, reporting. ~1,000 external users.</span><span data-lang="ru">10+ десктоп-приложений для клинических процессов: просмотр снимков, анонимизация, отчёты. ~1 000 пользователей.</span></p>
+<div class="tags"><span class="tag">Qt/QML</span><span class="tag">PyQt</span><span class="tag">PostgreSQL</span><span class="tag">DICOM</span></div></div>
+
+<div class="pc rv"><span class="pc-e">&#x1F310;</span><div class="pc-type">Freelance</div><h3>Telegram Bots &amp; Web Services</h3>
+<p><span data-lang="en" class="show">Complex bots with web app backends, turnkey web services, LLM integrations.</span><span data-lang="ru">Комплексные боты с Web App бэкендами, веб-сервисы под ключ, интеграция с LLM.</span></p>
+<div class="tags"><span class="tag">aiogram</span><span class="tag">FastAPI</span><span class="tag">Django</span><span class="tag">PostgreSQL</span></div></div>
+
+</div>
+</div></section>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience"><div class="wrap">
+<div class="sec-l rv"><span data-lang="en" class="show">// Career</span><span data-lang="ru">// Карьера</span></div>
+<h2 class="sec-t rv"><span data-lang="en" class="show">Experience</span><span data-lang="ru">Опыт работы</span></h2>
+<div class="tl">
+
+<div class="ti rv">
+<div class="ti-d ti-now"><span data-lang="en" class="show">Jan 2024 &mdash; now</span><span data-lang="ru">Янв 2024 &mdash; н.в.</span></div>
+<div><div class="ti-r"><span data-lang="en" class="show">Lead Python Developer</span><span data-lang="ru">Ведущий Python-разработчик</span></div>
+<div class="ti-c"><span data-lang="en" class="show">AVA Med Analytics &middot; Ekaterinburg</span><span data-lang="ru">АВА-мед-аналитика &middot; Екатеринбург</span></div>
+<div class="ti-desc"><span data-lang="en" class="show">Designing microservice architecture from scratch: 30+ FastAPI services, Celery + RabbitMQ + Redis. Desktop apps on Qt/QML. ML pipelines for DICOM processing. Mentoring a team of ~8 engineers.</span><span data-lang="ru">Микросервисная архитектура с нуля: 30+ сервисов на FastAPI, Celery + RabbitMQ + Redis. Десктоп на Qt/QML. ML-пайплайны для DICOM. Менторинг команды ~8 чел.</span></div>
+<div class="tags" style="margin-top:16px"><span class="tag">FastAPI</span><span class="tag">Celery</span><span class="tag">RabbitMQ</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Qt/QML</span></div></div></div>
+
+<div class="ti rv">
+<div class="ti-d"><span data-lang="en" class="show">Jan 2022 &mdash; Dec 2023</span><span data-lang="ru">Янв 2022 &mdash; Дек 2023</span></div>
+<div><div class="ti-r"><span data-lang="en" class="show">Lead Desktop &rarr; Backend Developer</span><span data-lang="ru">Ведущий Desktop &rarr; Backend</span></div>
+<div class="ti-c"><span data-lang="en" class="show">Avantrend &middot; Ekaterinburg &middot; MedTech</span><span data-lang="ru">Авантренд &middot; Екатеринбург &middot; MedTech</span></div>
+<div class="ti-desc"><span data-lang="en" class="show">Led desktop direction, transitioned to web with FastAPI. ML pipelines for DICOM. Mentoring 3+ juniors, implementing Clean Architecture.</span><span data-lang="ru">Лид Desktop-направления, переход в веб на FastAPI. ML-пайплайны для DICOM. Менторинг 3+ джуниоров, внедрение Clean Architecture.</span></div>
+<div class="tags" style="margin-top:16px"><span class="tag">FastAPI</span><span class="tag">ML</span><span class="tag">Docker</span><span class="tag">DICOM</span><span class="tag">pytest</span></div></div></div>
+
+<div class="ti rv">
+<div class="ti-d"><span data-lang="en" class="show">Mar 2020 &mdash; Dec 2021</span><span data-lang="ru">Мар 2020 &mdash; Дек 2021</span></div>
+<div><div class="ti-r"><span data-lang="en" class="show">Python Developer (Desktop)</span><span data-lang="ru">Python-разработчик (Desktop)</span></div>
+<div class="ti-c"><span data-lang="en" class="show">Avantrend &middot; Ekaterinburg &middot; MedTech</span><span data-lang="ru">Авантренд &middot; Екатеринбург &middot; MedTech</span></div>
+<div class="ti-desc"><span data-lang="en" class="show">Built 10+ Qt/QML desktop apps, ~1,000 users. ML model integration, first web dev experience with Django.</span><span data-lang="ru">10+ приложений Qt/QML, ~1 000 пользователей. Интеграция ML-моделей, старт веб-разработки на Django.</span></div>
+<div class="tags" style="margin-top:16px"><span class="tag">Qt/QML</span><span class="tag">PostgreSQL</span><span class="tag">Django</span><span class="tag">ML</span></div></div></div>
+
+<div class="ti rv">
+<div class="ti-d"><span data-lang="en" class="show">Mar 2019 &mdash; Feb 2020</span><span data-lang="ru">Мар 2019 &mdash; Фев 2020</span></div>
+<div><div class="ti-r"><span data-lang="en" class="show">Junior Python Developer</span><span data-lang="ru">Junior Python-разработчик</span></div>
+<div class="ti-c"><span data-lang="en" class="show">SIZ LLC &middot; Ekaterinburg</span><span data-lang="ru">ООО СИЗ &middot; Екатеринбург</span></div>
+<div class="ti-desc"><span data-lang="en" class="show">Automation scripts, document workflows, Google services integration. First Qt desktop apps.</span><span data-lang="ru">Автоматизация, скрипты документооборота, Google-интеграции. Первые Qt-приложения.</span></div>
+<div class="tags" style="margin-top:16px"><span class="tag">Python</span><span class="tag">Qt</span><span class="tag">SQL</span></div></div></div>
+
+</div>
+</div></section>
+
+<!-- SKILLS -->
+<section class="sec" id="skills"><div class="wrap">
+<div class="sec-l rv"><span data-lang="en" class="show">// Stack</span><span data-lang="ru">// Стек</span></div>
+<h2 class="sec-t rv"><span data-lang="en" class="show">Technologies</span><span data-lang="ru">Технологии</span></h2>
+<div class="sg">
+    <div class="sc rv"><div class="si si-b">&#x26A1;</div><h3>Backend</h3><div class="skl"><span>Python</span><span>FastAPI</span><span>Django</span><span>SQLAlchemy</span><span>asyncio</span></div></div>
+    <div class="sc rv"><div class="si si-m">&#x1F9E0;</div><h3>AI / ML</h3><div class="skl"><span>OpenAI API</span><span>LangChain</span><span>Local LLMs</span><span>ML inference</span><span>DICOM</span></div></div>
+    <div class="sc rv"><div class="si si-db">&#x1F5C4;&#xFE0F;</div><h3><span data-lang="en" class="show">Databases</span><span data-lang="ru">Базы данных</span></h3><div class="skl"><span>PostgreSQL</span><span>Redis</span><span>MySQL</span><span>MongoDB</span></div></div>
+    <div class="sc rv"><div class="si si-o">&#x1F433;</div><h3>DevOps</h3><div class="skl"><span>Docker</span><span>Celery</span><span>RabbitMQ</span><span>Git</span><span>Linux</span><span>Grafana</span></div></div>
+    <div class="sc rv"><div class="si si-d">&#x1F5A5;</div><h3>Desktop &amp; Frontend</h3><div class="skl"><span>Qt / QML</span><span>PyQt</span><span>React</span><span>TypeScript</span></div></div>
+    <div class="sc rv"><div class="si si-a">&#x1F4D0;</div><h3><span data-lang="en" class="show">Architecture</span><span data-lang="ru">Архитектура</span></h3><div class="skl"><span>Clean Architecture</span><span>SOLID</span><span>Microservices</span><span>pytest</span></div></div>
+</div>
+</div></section>
+
+<!-- EDUCATION -->
+<section class="sec"><div class="wrap">
+<div class="sec-l rv"><span data-lang="en" class="show">// Education</span><span data-lang="ru">// Образование</span></div>
+<h2 class="sec-t rv"><span data-lang="en" class="show">Education</span><span data-lang="ru">Образование</span></h2>
+<div class="tl">
+    <div class="ti rv"><div class="ti-d">2020</div><div><div class="ti-r"><span data-lang="en" class="show">Master's &mdash; Information Systems &amp; Technologies</span><span data-lang="ru">Магистр &mdash; Информационные системы и технологии</span></div><div class="ti-c"><span data-lang="en" class="show">Ural Federal University &middot; Institute of Physics &amp; Technology</span><span data-lang="ru">УрФУ &middot; Физико-технологический институт</span></div></div></div>
+    <div class="ti rv"><div class="ti-d">2018</div><div><div class="ti-r"><span data-lang="en" class="show">Bachelor's &mdash; Computer Science &amp; Engineering</span><span data-lang="ru">Бакалавр &mdash; Информатика и вычислительная техника</span></div><div class="ti-c"><span data-lang="en" class="show">Ural Federal University &middot; Institute of Physics &amp; Technology</span><span data-lang="ru">УрФУ &middot; Физико-технологический институт</span></div></div></div>
+</div>
+</div></section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact"><div class="wrap">
+<div class="sec-l rv"><span data-lang="en" class="show">// Contact</span><span data-lang="ru">// Связаться</span></div>
+<h2 class="sec-t rv"><span data-lang="en" class="show">Get in Touch</span><span data-lang="ru">Контакты</span></h2>
+<div class="cg">
+    <a href="https://t.me/dmitry_dtr" class="cc rv" target="_blank"><div class="cc-i">&#x2708;&#xFE0F;</div><div><div class="cc-l">Telegram</div><div class="cc-v">@dmitry_dtr</div></div></a>
+    <a href="mailto:dmitry.rychkov.a@gmail.com" class="cc rv" target="_blank"><div class="cc-i">&#x1F4E7;</div><div><div class="cc-l">Email</div><div class="cc-v">dmitry.rychkov.a@gmail.com</div></div></a>
+    <a href="https://github.com/DmitryRychkovA" class="cc rv" target="_blank"><div class="cc-i">&#x1F4BB;</div><div><div class="cc-l">GitHub</div><div class="cc-v">DmitryRychkovA</div></div></a>
+</div>
+</div></section>
+
+<footer><div class="wrap">Dmitry Rychkov &middot; Senior Python Backend Engineer &middot; 2026</div></footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+}, {threshold: .1});
+document.querySelectorAll('.rv').forEach(e => obs.observe(e));
+
+// Language toggle
+let currentLang = 'en';
+const langBtns = document.querySelectorAll('[data-set-lang]');
+
+function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    // Toggle all data-lang spans
+    document.querySelectorAll('[data-lang]').forEach(el => {
+        el.classList.toggle('show', el.dataset.lang === lang);
+    });
+    // Toggle buttons
+    langBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.setLang === lang);
+    });
+}
+
+langBtns.forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.setLang));
+});
+</script>
+</body>
+</html>
