@@ -13,192 +13,459 @@
   --bg:#f3f0e8; --paper:#faf8f3; --ink:#15130f; --ink2:#4a463e; --mute:#7a7468;
   --rule:#d8d1c1; --acc:#d4461a; --acc-soft:rgba(212,70,26,.10);
   --serif:"Instrument Serif",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#11100e; --paper:#191816; --ink:#ede9e0; --ink2:#bdb7aa; --mute:#8d887d;
     --rule:#2f2c27; --acc:#ff7040; --acc-soft:rgba(255,112,64,.12);
+    color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#11100e; --paper:#191816; --ink:#ede9e0; --ink2:#bdb7aa; --mute:#8d887d;
   --rule:#2f2c27; --acc:#ff7040; --acc-soft:rgba(255,112,64,.12);
+  color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
-@media (max-width:640px){.wrap{padding:0 16px}}
-
 html[data-lang="ru"] [lang="en"], html[data-lang="en"] [lang="ru"]{display:none!important}
 
-.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.spread{display:grid;grid-template-columns:300px 1fr;gap:64px;align-items:start}
+
+/* ---------- left, sticky ---------- */
+.left{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;scrollbar-width:thin;padding:36px 0 32px;display:flex;flex-direction:column;gap:24px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .mark{font:500 13px var(--mono);letter-spacing:.02em;text-decoration:none}
 .mark b{color:var(--acc);font-weight:500}
-.nav{display:flex;gap:24px;font:13px var(--mono)}
-.nav a{text-decoration:none;color:var(--ink2)}
-.nav a:hover{color:var(--acc)}
-.ctl{display:flex;gap:8px}
-.ctl button{font:12px var(--mono);background:none;border:1px solid var(--rule);color:var(--ink2);padding:4px 10px;border-radius:2px;cursor:pointer}
+.ctl{display:flex;gap:6px}
+.ctl button{font:12px var(--mono);background:none;border:1px solid var(--rule);color:var(--ink2);padding:4px 9px;border-radius:2px;cursor:pointer}
 .ctl button:hover,.ctl button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
-@media (max-width:820px){.nav{display:none}}
-
-.hero{padding:88px 0 72px;border-bottom:1px solid var(--rule)}
-.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
-.kicker{font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:24px;display:flex;align-items:center;gap:10px}
-h1{font:400 clamp(52px,8vw,104px)/.92 var(--serif);letter-spacing:-.02em;margin-bottom:28px}
-.lede{font-size:clamp(17px,1.6vw,19px);color:var(--ink2);max-width:540px;margin-bottom:32px}
+.kicker{font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+h1{font:400 clamp(40px,4vw,54px)/.95 var(--serif);letter-spacing:-.02em;margin-bottom:16px}
+.lede{font-size:16px;line-height:1.55;color:var(--ink2)}
 .lede strong{color:var(--ink);font-weight:500}
-.acts{display:flex;gap:12px;flex-wrap:wrap}
-.btn{font:500 14px var(--sans);text-decoration:none;padding:12px 20px;border:1px solid var(--ink);border-radius:2px;display:inline-flex;gap:8px;align-items:center;transition:background .15s,color .15s}
-.btn.solid{background:var(--ink);color:var(--bg)}
-.btn.solid:hover{background:var(--acc);border-color:var(--acc)}
-.btn:not(.solid):hover{background:var(--ink);color:var(--bg)}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:40px}.hero{padding:56px 0}}
+.toc{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.toc a{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--rule);font:13px var(--mono);text-decoration:none;color:var(--ink2)}
+.toc a i{font-style:normal;color:var(--mute);width:22px;flex:none}
+.toc a:hover,.toc a[aria-current]{color:var(--acc)}
+.toc a[aria-current] i{color:var(--acc)}
+.clock .tm{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.clock b{display:block;font:400 36px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.clock small{font:12px var(--mono);color:var(--mute);letter-spacing:.06em}
+.clock > span{font:12px var(--mono);color:var(--mute);display:block;margin-top:6px}
+.cx > div{padding:9px 0;border-top:1px solid var(--rule)}
+.cx > div:last-child{border-bottom:1px solid var(--rule)}
+.cx dt{font:12px var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.cx dd{font:14px/1.5 var(--mono);overflow-wrap:anywhere}
+.cx dd a{text-decoration:none;color:var(--ink)}
+.cx dd a:hover{color:var(--acc)}
 
-.fig{background:var(--paper);border:1px solid var(--rule);padding:18px 18px 12px;position:relative}
-.fig figcaption{font:11px var(--mono);color:var(--mute);letter-spacing:.06em;display:flex;justify-content:space-between;gap:12px;margin-top:8px}
+/* ---------- right, scrolling ---------- */
+.right{min-width:0}
+.right section{padding:56px 0;border-bottom:1px solid var(--rule)}
+.right section:first-child{padding-top:36px}
+.sh{display:flex;align-items:baseline;gap:16px 24px;flex-wrap:wrap;margin-bottom:32px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+.sh .n{flex:0 0 100px;font:400 clamp(30px,3.4vw,42px)/1 var(--serif);color:var(--acc);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.sh h2{font:400 clamp(30px,3.4vw,42px)/1 var(--serif);letter-spacing:-.01em}
+.sh .note{margin-left:auto;font:12px/1.5 var(--mono);color:var(--mute);text-align:right;text-wrap:balance}
+
+.pr{display:grid;grid-template-columns:280px 1fr;gap:32px;padding:24px 0;border-top:1px solid var(--rule);align-items:start}
+.pr:first-of-type{border-top:0;padding-top:0}
+.pr .k{font:12px var(--mono);color:var(--mute);letter-spacing:.1em;margin-bottom:6px}
+.pr h3{font:500 17px/1.3 var(--sans);margin-bottom:8px}
+.pr p{color:var(--ink2);font-size:15px;max-width:520px}
+
+.proj{padding:32px 0 44px;border-top:1px solid var(--rule)}
+.proj:first-of-type{border-top:0;padding-top:0}
+.ph{display:grid;grid-template-columns:100px 1fr 230px;gap:24px;align-items:baseline;margin-bottom:10px}
+.ph .y{font:12px var(--mono);color:var(--mute)}
+.ph h3{font:400 26px/1.15 var(--serif)}
+.ph .st{font:12px/1.7 var(--mono);color:var(--ink2);text-align:right}
+.proj > p{color:var(--ink2);font-size:15px;max-width:640px;margin:0 0 20px 124px}
+.proj > p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rule)}
+.proj > p a:hover{text-decoration-color:var(--acc);color:var(--acc)}
+
+.fig{background:var(--paper);border:1px solid var(--rule);padding:18px 18px 12px;margin:0}
 .fig svg{display:block;width:100%;height:auto}
+.fig svg.fn{display:none;max-width:380px;margin:0 auto}
+.fig figcaption{font:12px/1.5 var(--mono);color:var(--mute);letter-spacing:.04em;display:flex;justify-content:space-between;gap:12px 20px;margin-top:10px;flex-wrap:wrap}
 .fig .ln{stroke:var(--ink2);stroke-width:1;fill:none}
-.fig .flow{stroke:var(--acc);stroke-width:1.5;fill:none;stroke-dasharray:4 7;animation:flow 1.6s linear infinite}
-@keyframes flow{to{stroke-dashoffset:-22}}
+.fig .ln.bk{stroke:var(--mute);stroke-dasharray:3 4}
 .fig .box{fill:var(--bg);stroke:var(--ink);stroke-width:1}
 .fig .hot{fill:var(--acc-soft);stroke:var(--acc);stroke-width:1.2}
-.fig text{font-family:var(--mono);font-size:10.5px;fill:var(--ink)}
-.fig .t-m{fill:var(--mute);font-size:9.5px}
+.fig .hit{fill:transparent;stroke:none}
+.fig text{font-family:var(--mono);font-size:11px;fill:var(--ink)}
+.fig .t-m{fill:var(--mute);font-size:11px}
 .fig .t-a{fill:var(--acc)}
-@media (prefers-reduced-motion:reduce){.fig .flow{animation:none}}
+.fig svg.fn text{font-size:13px}
+.fig svg.fn .t-m{font-size:12.5px}
+@media (min-width:641px){.fig svg.fn text{font-size:11px}.fig svg.fn .t-m{font-size:10.5px}}
+.fig.mini{padding:14px 14px 10px}
+.fig.mini text{font-size:12px}
+.fig.mini .t-m{font-size:12px}
+.fig.mini figcaption{margin-top:8px}
+marker#ah path{fill:var(--ink2)}
+.fig .node{cursor:help;outline:none}
+.fig .node:hover .box,.fig .node.is-on .box,.fig .node:focus-visible .box{stroke:var(--acc);stroke-width:1.5}
+.fig .node:hover .hot,.fig .node.is-on .hot,.fig .node:focus-visible .hot{stroke-width:2}
+.fig .node:hover text,.fig .node.is-on text,.fig .node:focus-visible text{fill:var(--acc)}
+#tip{position:absolute;z-index:50;display:none;max-width:300px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:8px 10px;font:12px/1.5 var(--mono);box-shadow:2px 2px 0 var(--rule);pointer-events:none}
 
-section{padding:88px 0;border-bottom:1px solid var(--rule)}
-.sh{display:grid;grid-template-columns:180px 1fr;gap:32px;margin-bottom:48px;align-items:baseline}
-.sh .n{font:12px var(--mono);color:var(--acc);letter-spacing:.1em}
-.sh h2{font:400 clamp(34px,4.4vw,56px)/1 var(--serif);letter-spacing:-.01em}
-.body{display:grid;grid-template-columns:180px 1fr;gap:32px}
-.body > .side{font:12px/1.6 var(--mono);color:var(--mute)}
-@media (max-width:820px){.sh,.body{grid-template-columns:1fr;gap:12px}section{padding:64px 0}}
+/* plate: big figure + stamp strip */
+.fig.plate{padding:0}
+.fig.plate .fb{padding:18px 18px 14px}
+.fig .stamp{display:grid;grid-template-columns:max-content max-content minmax(0,1fr);gap:0;border-top:1px solid var(--rule);font:12px/1.5 var(--mono);color:var(--ink2);letter-spacing:0;margin:0}
+.fig .stamp > div{padding:8px 14px 9px;border-right:1px solid var(--rule);min-width:0;align-content:center}
+.fig .stamp > div:last-child{border-right:0;text-wrap:balance}
+.fig .stamp b{font-weight:500;color:var(--ink)}
+.fig .stamp .l{color:var(--mute)}
 
-.trio{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
-.trio div{padding:24px 24px 8px 0}
-.trio div + div{padding-left:24px;border-left:1px solid var(--rule)}
-.trio h3{font:500 17px var(--sans);margin-bottom:10px}
-.trio p{color:var(--ink2);font-size:15px}
-@media (max-width:820px){.trio{grid-template-columns:1fr}.trio div + div{padding-left:0;border-left:0;border-top:1px solid var(--rule)}}
+/* tools: rows on the 02 gutter (100px label + 24px gap), type as in .cx */
+.tools > div{display:grid;grid-template-columns:100px 1fr;gap:24px;align-items:baseline;padding:14px 0;border-top:1px solid var(--rule)}
+.tools > div:first-child{border-top:0;padding-top:0}
+.tools h4{font:400 12px var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.tools p{font:14px/1.7 var(--mono);color:var(--ink);text-wrap:pretty}
 
-.case p{color:var(--ink2);max-width:720px;margin-bottom:16px}
-.case p strong{color:var(--ink);font-weight:500}
-.spec{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);margin:36px 0}
-.spec div{padding:20px 16px 18px 0}
-.spec div + div{padding-left:16px;border-left:1px solid var(--rule)}
-.spec b{display:block;font:400 clamp(40px,5vw,64px)/1 var(--serif);letter-spacing:-.02em}
-.spec span{font:12px/1.4 var(--mono);color:var(--mute);display:block;margin-top:8px}
-@media (max-width:820px){.spec{grid-template-columns:repeat(2,1fr)}.spec div:nth-child(3){padding-left:0;border-left:0}.spec div:nth-child(n+3){border-top:1px solid var(--rule)}}
-.feats{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
-.feats li{padding:14px 0;border-top:1px solid var(--rule);color:var(--ink2);font-size:15px}
-.feats li b{color:var(--ink);font-weight:500;display:block}
-@media (max-width:820px){.feats{grid-template-columns:1fr}}
+footer{padding:24px 0 40px;font:12px var(--mono);color:var(--mute);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
-.rows{list-style:none;border-top:1px solid var(--ink)}
-.rows li{display:grid;grid-template-columns:120px 1fr 240px;gap:24px;padding:22px 0;border-bottom:1px solid var(--rule);align-items:baseline}
-.rows .y{font:12px var(--mono);color:var(--mute)}
-.rows h3{font:400 26px/1.1 var(--serif);margin-bottom:6px}
-.rows p{color:var(--ink2);font-size:15px}
-.rows .st{font:12px/1.7 var(--mono);color:var(--ink2);text-align:right}
-@media (max-width:820px){.rows li{grid-template-columns:1fr;gap:6px}.rows .st{text-align:left}}
-
-.xp{list-style:none;border-top:1px solid var(--ink)}
-.xp li{display:grid;grid-template-columns:180px 1fr;gap:32px;padding:24px 0;border-bottom:1px solid var(--rule)}
-.xp .d{font:12px var(--mono);color:var(--mute);padding-top:4px}
-.xp .d.now{color:var(--acc)}
-.xp h3{font:500 18px var(--sans)}
-.xp .c{font:13px var(--mono);color:var(--mute);margin:2px 0 10px}
-.xp p{color:var(--ink2);font-size:15px;max-width:720px}
-@media (max-width:820px){.xp li{grid-template-columns:1fr;gap:4px}}
-
-.stack{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px}
-.stack div{padding:16px 0;border-top:1px solid var(--rule)}
-.stack h4{font:12px var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-weight:400}
-.stack p{font-size:15px}
-@media (max-width:820px){.stack{grid-template-columns:1fr}}
-
-.contact h2{font:400 clamp(44px,7vw,92px)/.95 var(--serif);letter-spacing:-.02em;margin-bottom:32px}
-.contact h2 em{color:var(--acc)}
-.links{display:flex;flex-wrap:wrap;gap:12px}
-footer{padding:28px 0 40px;font:12px var(--mono);color:var(--mute)}
-footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.contact h2.ch{font:400 clamp(34px,4.4vw,56px)/1 var(--serif);margin-bottom:28px}
+@media (max-width:1160px){
+  .fig svg.fw{display:none}
+  .fig svg.fn{display:block}
+  .fig .stamp{grid-template-columns:max-content minmax(0,1fr)}
+  .fig .stamp > div:nth-child(2){border-right:0}
+  .fig .stamp > div:nth-child(3){grid-column:1/-1;border-right:0;border-top:1px solid var(--rule)}
+  .ph{grid-template-columns:100px 1fr}
+  .ph .st{grid-column:2;text-align:left}
+  .sh .note{flex-basis:100%;margin-left:0;text-align:left}
+}
+@media (max-width:900px){
+  .spread{grid-template-columns:1fr;gap:0}
+  .left{position:static;max-height:none;overflow:visible;padding:20px 0 24px;gap:20px;border-bottom:1px solid var(--ink)}
+  .toc{flex-direction:row;flex-wrap:wrap;border-top:0;gap:4px 24px}
+  .toc a{border-bottom:0;padding:4px 0}
+  .cx > div{display:flex;gap:12px;align-items:baseline;padding:7px 0}
+  .cx dt{flex:none;width:76px}
+  .cx dd{font-size:13px}
+  .right section:first-child{padding-top:40px}
+  .pr{grid-template-columns:1fr;gap:16px}
+  .fig.mini{max-width:300px}
+  .ph{grid-template-columns:1fr;gap:6px}
+  .ph .st{grid-column:auto}
+  .proj > p{margin-left:0}
+  .sh{gap:16px}
+  .sh .n{flex:0 0 auto}
+  .tools > div{grid-template-columns:1fr;gap:6px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .sh{margin-bottom:28px}
+  .fig{padding:12px 12px 10px}
+  .fig.mini{padding:12px}
+  .fig.plate{padding:0}
+  .fig.plate .fb{padding:12px 12px 10px}
+  .fig .stamp > div{padding:7px 10px 8px}
+  .right section{padding:44px 0}
+}
+/* short desktop windows (laptops): keep the sticky column inside the viewport */
+@media (min-width:901px) and (max-height:880px){
+  .left{gap:16px;padding-top:24px}
+  h1{font-size:40px}
+  .toc a{padding:7px 0}
+}
+@media (min-width:901px) and (max-height:720px){
+  .left{gap:10px;padding:20px 0}
+  .kicker{margin-bottom:10px}
+  h1{margin-bottom:10px}
+  .lede{font-size:15px;line-height:1.45}
+  .toc a{padding:6px 0}
+  .clock b{font-size:30px}
+  .cx > div{padding:6px 0}
+}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap">
-  <a class="mark" href="#top">rychkov<b>/</b>dmitry</a>
-  <nav class="nav"><a href="#do"><span lang="ru">Что делаю</span><span lang="en">What I do</span></a><a href="#work"><span lang="ru">Проекты</span><span lang="en">Projects</span></a><a href="#contact"><span lang="ru">Контакты</span><span lang="en">Contact</span></a></nav>
-  <div class="ctl"><button type="button" data-set-lang="ru">RU</button><button type="button" data-set-lang="en">EN</button><button type="button" id="theme" aria-label="Theme">◐</button></div>
-</div></header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z"/></marker></defs></svg>
 
-<main id="top">
-<div class="hero"><div class="wrap">
+<div class="wrap spread" id="top">
+<aside class="left">
+  <div class="bar">
+    <a class="mark" href="#top">rychkov<b>/</b>dmitry</a>
+    <div class="ctl"><button type="button" data-set-lang="ru">RU</button><button type="button" data-set-lang="en">EN</button><button type="button" id="theme" aria-label="Theme">◐</button></div>
+  </div>
   <div>
     <div class="kicker">Senior Python · <span lang="ru">LLM-системы и бэкенд</span><span lang="en">LLM systems and backend</span></div>
     <h1><span lang="ru">Дмитрий<br>Рычков</span><span lang="en">Dmitry<br>Rychkov</span></h1>
     <p class="lede"><span lang="ru"><strong>8 лет коммерческой разработки.</strong> Проектирую и пишу мультиагентные LLM-системы и бэкенд под них.</span><span lang="en"><strong>8 years in commercial software development.</strong> I design and build multi-agent LLM systems and the backend that runs them.</span></p>
-    <div class="acts">
-      <a class="btn solid" href="https://t.me/dmitry_dtr">Telegram</a>
-      <a class="btn" href="mailto:dmitry.rychkov.a@gmail.com">Email</a>
-      <a class="btn" href="https://github.com/DmitryRychkovA">GitHub</a>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#build"><i>01</i><span lang="ru">Как я строю</span><span lang="en">How I build</span></a>
+    <a href="#work"><i>02</i><span lang="ru">Проекты</span><span lang="en">Projects</span></a>
+    <a href="#tools"><i>03</i><span lang="ru">Инструменты</span><span lang="en">Tools</span></a>
+  </nav>
+  <div class="clock"><div class="tm"><b id="clock">—:—</b><small id="tz"></small></div><span><span lang="ru">сейчас в Екатеринбурге</span><span lang="en">now in Yekaterinburg</span></span></div>
+  <dl class="cx">
+    <div><dt>Telegram</dt><dd><a href="https://t.me/dmitry_dtr">@dmitry_dtr</a></dd></div>
+    <div><dt>Email</dt><dd><a href="mailto:dmitry.rychkov.a@gmail.com">dmitry.rychkov.a@gmail.com</a></dd></div>
+    <div><dt>GitHub</dt><dd><a href="https://github.com/DmitryRychkovA">github.com/DmitryRychkovA</a></dd></div>
+  </dl>
+</aside>
+
+<main class="right">
+
+<section id="build">
+  <header class="sh"><span class="n">01</span><h2><span lang="ru">Как я строю</span><span lang="en">How I build</span></h2><span class="note"><span lang="ru">узлы на фигурах с подсказками — наведите или коснитесь</span><span lang="en">figure nodes carry notes — hover or tap</span></span></header>
+
+  <div class="pr">
+    <figure class="fig mini">
+      <svg viewBox="0 0 240 130" role="img" data-label-ru="Один слой над моделями" data-label-en="One layer over the models">
+        <text x="12" y="13" class="t-m">providers</text>
+        <g class="node" data-tip="provider"><rect class="box" x="12" y="20" width="64" height="24"/><text x="44" y="36" text-anchor="middle">model A</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="88" y="20" width="64" height="24"/><text x="120" y="36" text-anchor="middle">model B</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="164" y="20" width="64" height="24"/><text x="196" y="36" text-anchor="middle">model C</text></g>
+        <path class="ln" d="M44 44 V56 M120 44 V56 M196 44 V56"/>
+        <g class="node" data-tip="layer"><rect class="hot" x="12" y="56" width="216" height="34"/><text x="120" y="70" text-anchor="middle" class="t-a">one layer</text><text x="120" y="84" text-anchor="middle" class="t-m">fallback · routing</text></g>
+        <path class="ln" d="M120 90 V102" marker-end="url(#ah)"/>
+        <g class="node" data-tip="app"><rect class="box" x="84" y="102" width="72" height="24"/><text x="120" y="118" text-anchor="middle">app</text></g>
+      </svg>
+      <figcaption><span lang="ru">провайдеры → один слой → приложение</span><span lang="en">providers → one layer → app</span></figcaption>
+    </figure>
+    <div>
+      <div class="k">01</div>
+      <h3><span lang="ru">Один слой над моделями</span><span lang="en">One layer over the models</span></h3>
+      <p><span lang="ru">Провайдеры меняются и падают, а код выше этого не замечает: фолбэк и выбор модели живут в одном месте.</span><span lang="en">Providers change and go down, and the code above never notices: fallback and model choice live in one place.</span></p>
     </div>
   </div>
-  <figure class="fig">
-      <svg viewBox="0 0 520 360" role="img" aria-label="Multi-agent LLM pipeline">
-        <text x="10" y="18" class="t-m">MODELS · ANY PROVIDER</text>
-        <g id="prov"></g>
-        <rect class="box" x="10" y="92" width="500" height="30"/>
-        <text x="20" y="111">model layer: fallback · cost/quality routing · context compression</text>
-        <path class="ln" d="M260 122 V150"/><path class="flow" d="M260 122 V150"/>
-        <rect class="hot" x="170" y="150" width="180" height="44"/>
-        <text x="186" y="169" class="t-a">orchestrator</text>
-        <text x="186" y="184" class="t-m">typed contracts · retries</text>
-        <g id="stages"></g>
-        <text x="10" y="352" class="t-m">FIG. 1 — MULTI-AGENT PIPELINE</text>
+
+  <div class="pr">
+    <figure class="fig mini">
+      <svg viewBox="0 0 240 130" role="img" data-label-ru="Контракты между шагами" data-label-en="Contracts between steps">
+        <g class="node" data-tip="contract"><rect class="hot" x="50" y="14" width="56" height="22"/><text x="78" y="29" text-anchor="middle" class="t-a">schema</text></g>
+        <g class="node" data-tip="contract"><rect class="hot" x="134" y="14" width="56" height="22"/><text x="162" y="29" text-anchor="middle" class="t-a">schema</text></g>
+        <g class="node" data-tip="step"><rect class="box" x="12" y="56" width="48" height="28"/><text x="36" y="74" text-anchor="middle">step</text></g>
+        <g class="node" data-tip="boundary"><rect class="hit" x="60" y="52" width="36" height="34"/><path class="ln" d="M78 36 V70"/><path class="ln" d="M60 70 H94" marker-end="url(#ah)"/></g>
+        <g class="node" data-tip="step"><rect class="box" x="96" y="56" width="48" height="28"/><text x="120" y="74" text-anchor="middle">step</text></g>
+        <g class="node" data-tip="boundary"><rect class="hit" x="144" y="52" width="36" height="34"/><path class="ln" d="M162 36 V70"/><path class="ln" d="M144 70 H178" marker-end="url(#ah)"/></g>
+        <g class="node" data-tip="step"><rect class="box" x="180" y="56" width="48" height="28"/><text x="204" y="74" text-anchor="middle">step</text></g>
+        <text x="120" y="116" text-anchor="middle" class="t-m">checked at every boundary</text>
       </svg>
-      <figcaption><span lang="ru">модели → слой моделей → оркестратор → агенты → одобрение человеком</span><span lang="en">models → model layer → orchestrator → agents → human approval</span></figcaption>
+      <figcaption><span lang="ru">шаг → схема → шаг</span><span lang="en">step → schema → step</span></figcaption>
     </figure>
-</div></div>
-
-<section id="do"><div class="wrap">
-  <div class="sh"><span class="n">01</span><h2><span lang="ru">Что делаю</span><span lang="en">What I do</span></h2></div>
-  <div class="trio">
-    <div><h3><span lang="ru">LLM-системы</span><span lang="en">LLM systems</span></h3><p><span lang="ru">Мультиагентная оркестрация, несколько провайдеров за одним слоем, фолбэк, выбор модели по цене и качеству, сжатие контекста.</span><span lang="en">Multi-agent orchestration, several providers behind one layer, fallback, cost/quality routing, context compression.</span></p></div>
-    <div><h3><span lang="ru">Бэкенд</span><span lang="en">Backend</span></h3><p><span lang="ru">FastAPI и Django, PostgreSQL, очереди задач на ARQ и Celery поверх Redis и RabbitMQ, наблюдаемость на Prometheus и Loki.</span><span lang="en">FastAPI and Django, PostgreSQL, task queues on ARQ and Celery over Redis and RabbitMQ, observability with Prometheus and Loki.</span></p></div>
-    <div><h3>ML</h3><p><span lang="ru">Пайплайны обработки медицинских снимков (DICOM), inference-сервисы, десктоп на Qt для клиник.</span><span lang="en">DICOM medical image processing pipelines, inference services, Qt desktop apps for clinics.</span></p></div>
+    <div>
+      <div class="k">02</div>
+      <h3><span lang="ru">Контракты между шагами</span><span lang="en">Contracts between steps</span></h3>
+      <p><span lang="ru">Каждый шаг принимает и отдаёт данные по схеме, поэтому ошибка видна на границе шага, а не в конце конвейера.</span><span lang="en">Every step takes and returns data by a schema, so an error shows up at the step boundary, not at the end of the pipeline.</span></p>
+    </div>
   </div>
-</div></section>
 
-<section id="work"><div class="wrap">
-  <div class="sh"><span class="n">02</span><h2><span lang="ru">Проекты</span><span lang="en">Projects</span></h2></div>
-  <ul class="rows">
-    <li><span class="y">—</span><div><h3><span lang="ru">Мультиагентная LLM-система · под NDA</span><span lang="en">Multi-agent LLM system · under NDA</span></h3><p><span lang="ru">Спроектировал и написал бэкенд целиком: слой над провайдерами моделей, оркестратор с типизированными контрактами, точки ручного одобрения. Технически вёл фронтенд-команду.</span><span lang="en">Designed and wrote the whole backend: a layer over model providers, an orchestrator with typed contracts, human approval points. Tech lead for the frontend team.</span></p></div><span class="st">FastAPI · PostgreSQL<br>ARQ · Redis · Pydantic</span></li>
-    <li><span class="y">2020 — <span lang="ru">сейчас</span><span lang="en">now</span></span><div><h3><span lang="ru">Медицинская визуализация</span><span lang="en">Medical imaging</span></h3><p><span lang="ru">Пайплайны DICOM и inference-сервисы в проде, десктоп-приложения на Qt/QML для клиник.</span><span lang="en">DICOM pipelines and inference services in production, Qt/QML desktop apps for clinics.</span></p></div><span class="st">Python · ONNX · OpenCV<br>Qt/QML · Docker</span></li>
-    <li><span class="y">2026</span><div><h3><span lang="ru">Открытый код</span><span lang="en">Open code</span></h3><p><span lang="ru"><a href='https://github.com/DmitryRychkovA/fastapi-clean-architecture'>fastapi-clean-architecture</a> — образец FastAPI-сервиса: слои по Clean Architecture, воркеры RabbitMQ, Redis, миграции Alembic, тесты, CI.</span><span lang="en"><a href='https://github.com/DmitryRychkovA/fastapi-clean-architecture'>fastapi-clean-architecture</a>: a reference FastAPI service with Clean Architecture layers, RabbitMQ workers, Redis, Alembic migrations, tests and CI.</span></p></div><span class="st">FastAPI · SQLAlchemy 2.0<br>RabbitMQ · Redis · Alembic</span></li>
-  </ul>
-  <div class="stack" style="margin-top:40px">
-    <div><h4>Backend</h4><p>Python · FastAPI · Django · SQLAlchemy 2.0 · PostgreSQL · Redis · ARQ · Celery · RabbitMQ · pytest · Docker</p></div>
-    <div><h4>AI / ML</h4><p><span lang="ru">мультиагентные системы</span><span lang="en">multi-agent systems</span> · MCP · OpenAI · Anthropic · Gemini · LangChain · Pydantic · ONNX · OpenCV</p></div>
+  <div class="pr">
+    <figure class="fig mini">
+      <svg viewBox="0 0 240 130" role="img" data-label-ru="Человек там, где ошибка дорогая" data-label-en="A human where a mistake is expensive">
+        <g class="node" data-tip="auto"><rect class="box" x="12" y="20" width="42" height="28"/><text x="33" y="38" text-anchor="middle">auto</text></g>
+        <path class="ln" d="M54 34 H68" marker-end="url(#ah)"/>
+        <g class="node" data-tip="auto"><rect class="box" x="70" y="20" width="42" height="28"/><text x="91" y="38" text-anchor="middle">auto</text></g>
+        <path class="ln" d="M112 34 H126" marker-end="url(#ah)"/>
+        <g class="node" data-tip="approval"><rect class="hot" x="128" y="20" width="42" height="28"/><text x="149" y="38" text-anchor="middle" class="t-a">human</text></g>
+        <path class="ln" d="M170 34 H184" marker-end="url(#ah)"/>
+        <g class="node" data-tip="auto"><rect class="box" x="186" y="20" width="42" height="28"/><text x="207" y="38" text-anchor="middle">auto</text></g>
+        <g class="node" data-tip="cost">
+          <rect class="hit" x="12" y="60" width="216" height="46"/>
+          <rect class="box" x="23" y="92" width="20" height="8"/>
+          <rect class="box" x="81" y="88" width="20" height="12"/>
+          <rect class="hot" x="139" y="66" width="20" height="34"/>
+          <rect class="box" x="197" y="92" width="20" height="8"/>
+          <path class="ln" d="M12 100 H228"/>
+          <text x="12" y="118" class="t-m">cost of error</text>
+        </g>
+      </svg>
+      <figcaption><span lang="ru">где цена ошибки высокая — человек</span><span lang="en">where the cost is high — a human</span></figcaption>
+    </figure>
+    <div>
+      <div class="k">03</div>
+      <h3><span lang="ru">Человек там, где ошибка дорогая</span><span lang="en">A human where a mistake is expensive</span></h3>
+      <p><span lang="ru">Автоматика идёт сама, пока ошибка дешёвая; там, где переделка дорога, конвейер останавливается и ждёт решения человека.</span><span lang="en">Automation runs on its own while mistakes are cheap; where redoing is expensive, the pipeline stops and waits for a human decision.</span></p>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="contact" class="contact"><div class="wrap">
-  <div class="sh"><span class="n">03</span><span></span></div>
-  <h2 class="ch"><span lang="ru">Контакты</span><span lang="en">Contact</span></h2>
-  <div class="links">
-    <a class="btn solid" href="https://t.me/dmitry_dtr">Telegram · @dmitry_dtr</a>
-    <a class="btn" href="mailto:dmitry.rychkov.a@gmail.com">dmitry.rychkov.a@gmail.com</a>
-    <a class="btn" href="https://github.com/DmitryRychkovA">GitHub</a>
+<section id="work">
+  <header class="sh"><span class="n">02</span><h2><span lang="ru">Проекты</span><span lang="en">Projects</span></h2></header>
+
+  <article class="proj">
+    <div class="ph"><span class="y">—</span><h3><span lang="ru">Мультиагентная LLM-система · под NDA</span><span lang="en">Multi-agent LLM system · under NDA</span></h3><span class="st">FastAPI · PostgreSQL<br>ARQ · Redis · Pydantic</span></div>
+    <p><span lang="ru">Спроектировал и написал бэкенд целиком: слой над провайдерами моделей, оркестратор с типизированными контрактами, точки ручного одобрения. Технически вёл фронтенд-команду.</span><span lang="en">Designed and wrote the whole backend: a layer over model providers, an orchestrator with typed contracts, human approval points. Tech lead for the frontend team.</span></p>
+    <figure class="fig plate">
+      <div class="fb">
+      <svg class="fw" viewBox="0 0 700 330" role="img" data-label-ru="Схема мультиагентной LLM-системы" data-label-en="Multi-agent LLM pipeline">
+        <text x="10" y="14" class="t-m">MODELS · ANY PROVIDER</text>
+        <g class="node" data-tip="provider"><rect class="box" x="14" y="24" width="162" height="26"/><text x="95" y="41" text-anchor="middle">GPT</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="184" y="24" width="162" height="26"/><text x="265" y="41" text-anchor="middle">Claude</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="354" y="24" width="162" height="26"/><text x="435" y="41" text-anchor="middle">Gemini</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="524" y="24" width="162" height="26"/><text x="605" y="41" text-anchor="middle">open-source</text></g>
+        <path class="ln" d="M95 50 V82" marker-end="url(#ah)"/><path class="ln" d="M265 50 V82" marker-end="url(#ah)"/><path class="ln" d="M435 50 V82" marker-end="url(#ah)"/><path class="ln" d="M605 50 V82" marker-end="url(#ah)"/>
+        <text x="10" y="76" class="t-m">MODEL LAYER</text>
+        <rect class="box" x="10" y="84" width="680" height="32"/>
+        <g class="node" data-tip="fallback"><rect class="hit" x="10" y="84" width="226" height="32"/><text x="123" y="104" text-anchor="middle">fallback</text></g>
+        <path class="ln" d="M236 84 V116"/>
+        <g class="node" data-tip="routing"><rect class="hit" x="236" y="84" width="227" height="32"/><text x="350" y="104" text-anchor="middle">cost / quality routing</text></g>
+        <path class="ln" d="M463 84 V116"/>
+        <g class="node" data-tip="compression"><rect class="hit" x="463" y="84" width="227" height="32"/><text x="577" y="104" text-anchor="middle">context compression</text></g>
+        <path class="ln" d="M350 116 V144" marker-end="url(#ah)"/>
+        <g class="node" data-tip="orchestrator"><rect class="hot" x="250" y="146" width="200" height="44"/><text x="266" y="164" class="t-a">orchestrator</text></g>
+        <g class="node" data-tip="contract"><rect class="hit" x="262" y="169" width="102" height="16"/><text x="266" y="181" class="t-m">typed contracts</text></g>
+        <text x="368" y="181" class="t-m">·</text>
+        <g class="node" data-tip="retry"><rect class="hit" x="376" y="169" width="52" height="16"/><text x="380" y="181" class="t-m">retries</text></g>
+        <path class="ln" d="M350 190 C350 226 78 226 78 260"/>
+        <path class="ln" d="M350 190 C350 226 214 226 214 260"/>
+        <path class="ln" d="M350 190 V260"/>
+        <path class="ln" d="M350 190 C350 226 486 226 486 260"/>
+        <path class="ln" d="M350 190 C350 226 622 226 622 260"/>
+        <g class="node" data-tip="agent"><rect class="box" x="14" y="260" width="128" height="40"/><text x="78" y="277" text-anchor="middle">agent</text><text x="78" y="291" text-anchor="middle" class="t-m">plan</text></g>
+        <g class="node" data-tip="agent"><rect class="box" x="150" y="260" width="128" height="40"/><text x="214" y="277" text-anchor="middle">agent</text><text x="214" y="291" text-anchor="middle" class="t-m">generate</text></g>
+        <g class="node" data-tip="agent"><rect class="box" x="286" y="260" width="128" height="40"/><text x="350" y="277" text-anchor="middle">agent</text><text x="350" y="291" text-anchor="middle" class="t-m">check</text></g>
+        <g class="node" data-tip="tools"><rect class="box" x="422" y="260" width="128" height="40"/><text x="486" y="277" text-anchor="middle">tools</text><text x="486" y="291" text-anchor="middle" class="t-m">API · DB</text></g>
+        <g class="node" data-tip="approval"><rect class="hot" x="558" y="260" width="128" height="40"/><text x="622" y="277" text-anchor="middle" class="t-a">human</text><text x="622" y="291" text-anchor="middle" class="t-m">approve</text></g>
+        <text x="10" y="322" class="t-m">typed · logged · retryable · human approval</text>
+      </svg>
+      <svg class="fn" viewBox="0 0 340 462" role="img" data-label-ru="Схема мультиагентной LLM-системы" data-label-en="Multi-agent LLM pipeline">
+        <text x="10" y="14" class="t-m">MODELS · ANY PROVIDER</text>
+        <g class="node" data-tip="provider"><rect class="box" x="13" y="22" width="74" height="36"/><text x="50" y="44" text-anchor="middle">GPT</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="93" y="22" width="74" height="36"/><text x="130" y="44" text-anchor="middle">Claude</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="173" y="22" width="74" height="36"/><text x="210" y="44" text-anchor="middle">Gemini</text></g>
+        <g class="node" data-tip="provider"><rect class="box" x="253" y="22" width="74" height="36"/><text x="290" y="38" text-anchor="middle">open</text><text x="290" y="52" text-anchor="middle">source</text></g>
+        <path class="ln" d="M50 58 V74" marker-end="url(#ah)"/><path class="ln" d="M130 58 V74" marker-end="url(#ah)"/><path class="ln" d="M210 58 V74" marker-end="url(#ah)"/><path class="ln" d="M290 58 V74" marker-end="url(#ah)"/>
+        <rect class="box" x="10" y="76" width="320" height="84"/>
+        <text x="20" y="92" class="t-m">MODEL LAYER</text>
+        <g class="node" data-tip="fallback"><rect class="hit" x="10" y="98" width="320" height="18"/><text x="20" y="111">fallback</text></g>
+        <g class="node" data-tip="routing"><rect class="hit" x="10" y="116" width="320" height="18"/><text x="20" y="129">cost / quality routing</text></g>
+        <g class="node" data-tip="compression"><rect class="hit" x="10" y="134" width="320" height="18"/><text x="20" y="147">context compression</text></g>
+        <path class="ln" d="M170 160 V176" marker-end="url(#ah)"/>
+        <g class="node" data-tip="orchestrator"><rect class="hot" x="50" y="178" width="240" height="48"/><text x="64" y="197" class="t-a">orchestrator</text></g>
+        <g class="node" data-tip="contract"><rect class="hit" x="60" y="203" width="112" height="16"/><text x="64" y="215" class="t-m">typed contracts</text></g>
+        <text x="176" y="215" class="t-m">·</text>
+        <g class="node" data-tip="retry"><rect class="hit" x="186" y="203" width="60" height="16"/><text x="190" y="215" class="t-m">retries</text></g>
+        <path class="ln" d="M170 226 V242" marker-end="url(#ah)"/>
+        <g class="node" data-tip="agent"><rect class="box" x="10" y="244" width="320" height="32"/><text x="22" y="264">agent</text><text x="318" y="264" text-anchor="end" class="t-m">plan</text></g>
+        <path class="ln" d="M170 276 V284"/>
+        <g class="node" data-tip="agent"><rect class="box" x="10" y="284" width="320" height="32"/><text x="22" y="304">agent</text><text x="318" y="304" text-anchor="end" class="t-m">generate</text></g>
+        <path class="ln" d="M170 316 V324"/>
+        <g class="node" data-tip="agent"><rect class="box" x="10" y="324" width="320" height="32"/><text x="22" y="344">agent</text><text x="318" y="344" text-anchor="end" class="t-m">check</text></g>
+        <path class="ln" d="M170 356 V364"/>
+        <g class="node" data-tip="tools"><rect class="box" x="10" y="364" width="320" height="32"/><text x="22" y="384">tools</text><text x="318" y="384" text-anchor="end" class="t-m">API · DB</text></g>
+        <path class="ln" d="M170 396 V404"/>
+        <g class="node" data-tip="approval"><rect class="hot" x="10" y="404" width="320" height="32"/><text x="22" y="424" class="t-a">human</text><text x="318" y="424" text-anchor="end" class="t-m">approve</text></g>
+        <text x="10" y="456" class="t-m">typed · logged · retryable · human approval</text>
+      </svg>
+      </div>
+      <figcaption class="stamp">
+        <div><b>FIG. 1</b></div>
+        <div><b><span lang="ru">Мультиагентный конвейер</span><span lang="en">Multi-agent pipeline</span></b></div>
+        <div><span class="l"><span lang="ru">изображено:</span><span lang="en">shows:</span></span> <span lang="ru">модели → слой моделей → оркестратор → агенты → одобрение человеком</span><span lang="en">models → model layer → orchestrator → agents → human approval</span></div>
+      </figcaption>
+    </figure>
+  </article>
+
+  <article class="proj">
+    <div class="ph"><span class="y">2020 — <span lang="ru">сейчас</span><span lang="en">now</span></span><h3><span lang="ru">Медицинская визуализация</span><span lang="en">Medical imaging</span></h3><span class="st">Python · ONNX · OpenCV<br>Qt/QML · Docker</span></div>
+    <p><span lang="ru">Пайплайны DICOM и inference-сервисы в проде, десктоп-приложения на Qt/QML для клиник.</span><span lang="en">DICOM pipelines and inference services in production, Qt/QML desktop apps for clinics.</span></p>
+    <figure class="fig plate">
+      <div class="fb">
+      <svg class="fw" viewBox="0 0 700 160" role="img" data-label-ru="Конвейер медицинских снимков" data-label-en="Medical imaging pipeline">
+        <text x="10" y="14" class="t-m">SOURCE</text>
+        <g class="node" data-tip="service"><rect class="hit" x="188" y="2" width="324" height="30"/><text x="188" y="14" class="t-m">INFERENCE SERVICE · Docker</text><path class="ln" d="M188 22 V28 H512 V22"/></g>
+        <text x="544" y="14" class="t-m">DESKTOP</text>
+        <g class="node" data-tip="dicom"><rect class="box" x="10" y="40" width="146" height="66"/><text x="22" y="60">DICOM</text><text x="22" y="77" class="t-m">pixels + metadata</text><text x="22" y="92" class="t-m">study · series</text></g>
+        <path class="ln" d="M156 73 H186" marker-end="url(#ah)"/>
+        <g class="node" data-tip="preprocess"><rect class="box" x="188" y="40" width="146" height="66"/><text x="200" y="60">preprocessing</text><text x="200" y="77" class="t-m">normalize · resize</text></g>
+        <g class="node" data-tip="windowing"><rect class="hit" x="196" y="81" width="80" height="16"/><text x="200" y="92" class="t-m">windowing</text></g>
+        <path class="ln" d="M334 73 H364" marker-end="url(#ah)"/>
+        <g class="node" data-tip="inference"><rect class="hot" x="366" y="40" width="146" height="66"/><text x="378" y="60" class="t-a">inference</text><text x="378" y="92" class="t-m">model → prediction</text></g>
+        <g class="node" data-tip="onnx"><rect class="hit" x="374" y="66" width="90" height="16"/><text x="378" y="77" class="t-m">ONNX runtime</text></g>
+        <path class="ln" d="M512 73 H542" marker-end="url(#ah)"/>
+        <g class="node" data-tip="viewer"><rect class="box" x="544" y="40" width="146" height="66"/><text x="556" y="60">viewer · Qt/QML</text><text x="556" y="77" class="t-m">image + overlay</text><text x="556" y="92" class="t-m">for the clinician</text></g>
+        <path class="ln bk" d="M83 106 V130 H617 V108" marker-end="url(#ah)"/>
+        <text x="350" y="125" text-anchor="middle" class="t-m" lang="ru">исходный снимок</text><text x="350" y="125" text-anchor="middle" class="t-m" lang="en">original image</text>
+        <text x="10" y="150" class="t-m">one study in → one result out · same steps every time</text>
+      </svg>
+      <svg class="fn" viewBox="0 0 340 336" role="img" data-label-ru="Конвейер медицинских снимков" data-label-en="Medical imaging pipeline">
+        <text x="10" y="14" class="t-m">SOURCE</text>
+        <g class="node" data-tip="dicom"><rect class="box" x="10" y="22" width="286" height="58"/><text x="22" y="42">DICOM</text><text x="22" y="60" class="t-m">pixels + metadata · study · series</text></g>
+        <path class="ln" d="M153 80 V98" marker-end="url(#ah)"/>
+        <g class="node" data-tip="preprocess"><rect class="box" x="10" y="100" width="286" height="58"/><text x="22" y="120">preprocessing</text><text x="22" y="138" class="t-m">normalize · resize · windowing</text></g>
+        <path class="ln" d="M153 158 V176" marker-end="url(#ah)"/>
+        <g class="node" data-tip="inference"><rect class="hot" x="10" y="178" width="286" height="58"/><text x="22" y="198" class="t-a">inference</text><text x="22" y="216" class="t-m">ONNX runtime · model → prediction</text></g>
+        <path class="ln" d="M153 236 V254" marker-end="url(#ah)"/>
+        <g class="node" data-tip="viewer"><rect class="box" x="10" y="256" width="286" height="58"/><text x="22" y="276">viewer · Qt/QML</text><text x="22" y="294" class="t-m">image + overlay · for the clinician</text></g>
+        <path class="ln bk" d="M296 51 H312 V285 H298" marker-end="url(#ah)"/>
+        <text x="332" y="168" text-anchor="middle" transform="rotate(-90 332 168)" class="t-m" lang="ru">исходный снимок</text><text x="332" y="168" text-anchor="middle" transform="rotate(-90 332 168)" class="t-m" lang="en">original image</text>
+        <text x="10" y="330" class="t-m">one study in → one result out</text>
+      </svg>
+      </div>
+      <figcaption class="stamp">
+        <div><b>FIG. 2</b></div>
+        <div><b><span lang="ru">Конвейер медицинских снимков</span><span lang="en">Medical imaging pipeline</span></b></div>
+        <div><span class="l"><span lang="ru">изображено:</span><span lang="en">shows:</span></span> <span lang="ru">снимок DICOM → предобработка → inference → просмотрщик на Qt</span><span lang="en">DICOM image → preprocessing → inference → Qt viewer</span></div>
+      </figcaption>
+    </figure>
+  </article>
+
+  <article class="proj">
+    <div class="ph"><span class="y">2026</span><h3><span lang="ru">Открытый код</span><span lang="en">Open code</span></h3><span class="st">FastAPI · SQLAlchemy 2.0<br>RabbitMQ · Redis · Alembic</span></div>
+    <p><span lang="ru"><a href='https://github.com/DmitryRychkovA/fastapi-clean-architecture'>fastapi-clean-architecture</a> — образец FastAPI-сервиса: слои по Clean Architecture, воркеры RabbitMQ, Redis, миграции Alembic, тесты, CI.</span><span lang="en"><a href='https://github.com/DmitryRychkovA/fastapi-clean-architecture'>fastapi-clean-architecture</a>: a reference FastAPI service with Clean Architecture layers, RabbitMQ workers, Redis, Alembic migrations, tests and CI.</span></p>
+    <figure class="fig plate">
+      <div class="fb">
+      <svg class="fw" viewBox="0 0 700 282" role="img" data-label-ru="Слои Clean Architecture" data-label-en="Clean Architecture layers">
+        <text x="10" y="14" class="t-m">DEPENDENCIES POINT INWARD</text>
+        <g class="node" data-tip="dependency"><rect class="hit" x="14" y="22" width="32" height="224"/><path class="ln" d="M30 30 V132" marker-end="url(#ah)"/><path class="ln" d="M30 238 V190" marker-end="url(#ah)"/></g>
+        <g class="node" data-tip="presentation"><rect class="box" x="60" y="30" width="440" height="40"/><text x="72" y="55">presentation</text><text x="488" y="55" text-anchor="end" class="t-m">HTTP · routers · schemas</text></g>
+        <g class="node" data-tip="application"><rect class="box" x="60" y="86" width="440" height="40"/><text x="72" y="111">application</text><text x="488" y="111" text-anchor="end" class="t-m">use cases · ports</text></g>
+        <g class="node" data-tip="domain"><rect class="hot" x="60" y="142" width="440" height="40"/><text x="72" y="167" class="t-a">domain</text><text x="488" y="167" text-anchor="end" class="t-m">entities · rules · no frameworks</text></g>
+        <g class="node" data-tip="infrastructure"><rect class="box" x="60" y="198" width="440" height="40"/><text x="72" y="223">infrastructure</text><text x="488" y="223" text-anchor="end" class="t-m">PostgreSQL · RabbitMQ · Redis · Alembic</text></g>
+        <path class="ln" d="M540 106 H502" marker-end="url(#ah)"/>
+        <path class="ln" d="M500 218 H538" marker-end="url(#ah)"/>
+        <g class="node" data-tip="workers"><rect class="box" x="540" y="86" width="150" height="152"/><text x="552" y="110">workers</text><text x="552" y="128" class="t-m">consume queue</text><text x="552" y="144" class="t-m">run use cases</text><text x="552" y="160" class="t-m">outside the request</text><text x="552" y="176" class="t-m">own process</text></g>
+        <g class="node" data-tip="migrations"><rect class="hit" x="56" y="258" width="130" height="16"/><text x="60" y="270" class="t-m">migrations · Alembic</text></g>
+        <g class="node" data-tip="ci"><rect class="hit" x="226" y="258" width="70" height="16"/><text x="230" y="270" class="t-m">tests · CI</text></g>
+      </svg>
+      <svg class="fn" viewBox="0 0 340 346" role="img" data-label-ru="Слои Clean Architecture" data-label-en="Clean Architecture layers">
+        <text x="10" y="14" class="t-m">DEPENDENCIES POINT INWARD</text>
+        <g class="node" data-tip="dependency"><rect class="hit" x="6" y="22" width="24" height="230"/><path class="ln" d="M18 28 V138" marker-end="url(#ah)"/><path class="ln" d="M18 244 V186" marker-end="url(#ah)"/></g>
+        <g class="node" data-tip="presentation"><rect class="box" x="30" y="28" width="304" height="44"/><text x="42" y="46">presentation</text><text x="42" y="62" class="t-m">HTTP · routers · schemas</text></g>
+        <g class="node" data-tip="application"><rect class="box" x="30" y="84" width="304" height="44"/><text x="42" y="102">application</text><text x="42" y="118" class="t-m">use cases · ports</text></g>
+        <g class="node" data-tip="domain"><rect class="hot" x="30" y="140" width="304" height="44"/><text x="42" y="158" class="t-a">domain</text><text x="42" y="174" class="t-m">entities · rules · no frameworks</text></g>
+        <g class="node" data-tip="infrastructure"><rect class="box" x="30" y="196" width="304" height="44"/><text x="42" y="214">infrastructure</text><text x="42" y="230" class="t-m">PostgreSQL · RabbitMQ · Redis</text></g>
+        <path class="ln" d="M182 240 V266" marker-end="url(#ah)"/>
+        <g class="node" data-tip="workers"><rect class="box" x="30" y="268" width="304" height="44"/><text x="42" y="286">workers</text><text x="42" y="302" class="t-m">consume queue · run use cases</text></g>
+        <g class="node" data-tip="migrations"><rect class="hit" x="26" y="324" width="150" height="18"/><text x="30" y="337" class="t-m">migrations · Alembic</text></g>
+        <g class="node" data-tip="ci"><rect class="hit" x="220" y="324" width="80" height="18"/><text x="224" y="337" class="t-m">tests · CI</text></g>
+      </svg>
+      </div>
+      <figcaption class="stamp">
+        <div><b>FIG. 3</b></div>
+        <div><b><span lang="ru">Слои Clean Architecture</span><span lang="en">Clean Architecture layers</span></b></div>
+        <div><span class="l"><span lang="ru">изображено:</span><span lang="en">shows:</span></span> <span lang="ru">presentation → application → domain ← infrastructure · воркеры отдельно</span><span lang="en">presentation → application → domain ← infrastructure · workers apart</span></div>
+      </figcaption>
+    </figure>
+  </article>
+</section>
+
+<section id="tools">
+  <header class="sh"><span class="n">03</span><h2><span lang="ru">Инструменты</span><span lang="en">Tools</span></h2></header>
+  <div class="tools">
+    <div><h4>Backend</h4><p>Python&nbsp;· FastAPI&nbsp;· Django&nbsp;· SQLAlchemy&nbsp;2.0&nbsp;· PostgreSQL&nbsp;· Alembic&nbsp;· pytest</p></div>
+    <div><h4><span lang="ru">Очереди и&nbsp;инфра</span><span lang="en">Queues and&nbsp;infra</span></h4><p>ARQ&nbsp;· Celery&nbsp;· Redis&nbsp;· RabbitMQ&nbsp;· Docker&nbsp;· Prometheus&nbsp;· Loki</p></div>
+    <div><h4>LLM</h4><p><span lang="ru">мультиагентные системы</span><span lang="en">multi-agent systems</span>&nbsp;· MCP&nbsp;· OpenAI&nbsp;· Anthropic&nbsp;· Gemini&nbsp;· LangChain&nbsp;· Pydantic</p></div>
+    <div><h4>ML · Desktop</h4><p>ONNX&nbsp;· OpenCV&nbsp;· DICOM&nbsp;· Qt/QML</p></div>
   </div>
-</div></section>
+</section>
+
+<footer><span>© 2026 Dmitry Rychkov</span><span><span lang="ru">Екатеринбург</span><span lang="en">Yekaterinburg</span></span></footer>
 </main>
-<footer><div class="wrap"><span><span lang="ru">Екатеринбург</span><span lang="en">Yekaterinburg</span></span><span>© 2026 Dmitry Rychkov</span></div></footer>
+</div>
+
 <script>
 (function () {
   const root = document.documentElement;
@@ -207,36 +474,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   const setLang = l => { root.dataset.lang = l; root.lang = l;
     document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
     document.title = l === 'en' ? 'Dmitry Rychkov — Senior Python, LLM systems and backend' : 'Дмитрий Рычков — Senior Python, LLM-системы и бэкенд';
-    const fig = document.querySelector('.fig svg'); if (fig) fig.setAttribute('aria-label', l === 'en' ? 'Multi-agent LLM pipeline' : 'Схема мультиагентной LLM-системы');
-    put('lang', l); };
+    document.querySelectorAll('svg[data-label-ru]').forEach(s => s.setAttribute('aria-label', l === 'en' ? s.dataset.labelEn : s.dataset.labelRu));
+    put('lang', l);
+    if (window.__tipRefresh) window.__tipRefresh();
+    if (window.__clockRefresh) window.__clockRefresh(); };
   setLang(get('lang') || ((navigator.language || 'ru').startsWith('ru') ? 'ru' : 'en'));
   document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.setLang)));
-})();
-</script>
-<script>
-(function () {
-  const NS = 'http://www.w3.org/2000/svg';
-  const el = (tag, a, t) => { const n = document.createElementNS(NS, tag); for (const k in a) n.setAttribute(k, a[k]); if (t) n.textContent = t; return n; };
-  const prov = ['GPT', 'Claude', 'Gemini', 'open-source'];
-  const g = document.getElementById('prov'); const w = 500 / prov.length;
-  prov.forEach((p, i) => {
-    const x = 10 + i * w, cx = x + w / 2;
-    g.append(el('rect', { class: 'box', x: x + 4, y: 30, width: w - 8, height: 26 }));
-    g.append(el('text', { x: cx, y: 47, 'text-anchor': 'middle' }, p));
-    g.append(el('path', { class: 'ln', d: `M${cx} 56 V92` }));
-    if (i % 2) g.append(el('path', { class: 'flow', d: `M${cx} 56 V92`, style: `animation-delay:${-i * .4}s` }));
-  });
-  const st = [['agent', 'plan'], ['agent', 'generate'], ['agent', 'check'], ['tools', 'API · DB'], ['human', 'approve']];
-  const s = document.getElementById('stages'); const sw = 500 / st.length;
-  st.forEach(([a, b], i) => {
-    const x = 10 + i * sw, cx = x + sw / 2, d = `M260 194 C260 232 ${cx} 232 ${cx} 266`;
-    s.append(el('path', { class: 'ln', d })); s.append(el('path', { class: 'flow', d, style: `animation-delay:${-i * .35}s` }));
-    const hot = i === 4;
-    s.append(el('rect', { class: hot ? 'hot' : 'box', x: x + 4, y: 266, width: sw - 8, height: 40 }));
-    s.append(el('text', { x: cx, y: 283, 'text-anchor': 'middle', class: hot ? 't-a' : '' }, a));
-    s.append(el('text', { x: cx, y: 297, 'text-anchor': 'middle', class: 't-m' }, b));
-  });
-  s.append(el('text', { x: 10, y: 326, class: 't-m' }, 'typed · logged · retryable · human approval'));
 })();
 (function () {
   const root = document.documentElement;
@@ -247,6 +490,91 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark'; put('theme', root.dataset.theme);
   });
+})();
+(function () {
+  const el = document.getElementById('clock'), tz = document.getElementById('tz'); if (!el) return;
+  const opt = { timeZone: 'Asia/Yekaterinburg', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+  const fmt = { ru: new Intl.DateTimeFormat('ru-RU', opt), en: new Intl.DateTimeFormat('en-GB', opt) };
+  let zf = null; try { zf = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Yekaterinburg', timeZoneName: 'shortOffset' }); } catch {}
+  const tick = () => {
+    const d = new Date(), l = document.documentElement.dataset.lang === 'en' ? 'en' : 'ru';
+    el.textContent = fmt[l].format(d);
+    if (tz && zf) { try { const p = zf.formatToParts(d).find(p => p.type === 'timeZoneName'); tz.textContent = p ? '· ' + p.value.replace('GMT', 'UTC') : ''; } catch { tz.textContent = ''; } }
+  };
+  tick(); window.__clockRefresh = tick;
+  setTimeout(() => { tick(); setInterval(tick, 60000); }, 60000 - (Date.now() % 60000) + 200);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+})();
+(function () {
+  const TIPS = {
+    provider: { ru: 'Провайдер — внешний сервис с моделью: принимает текст, возвращает текст. Их может быть несколько, и они взаимозаменяемы.', en: 'A provider is an external model service: text in, text out. There can be several, and they are interchangeable.' },
+    layer: { ru: 'Один слой над всеми провайдерами. Код выше зовёт «модель», а какая именно ответит, решается здесь: фолбэк, выбор по цене.', en: 'One layer over all providers. The code above calls “a model”; which one answers is decided here: fallback, cost routing.' },
+    app: { ru: 'Приложение — код, которому нужен ответ модели. Он говорит с одним слоем, а не с каждым провайдером отдельно.', en: 'The application is the code that needs a model’s answer. It talks to one layer, not to each provider separately.' },
+    fallback: { ru: 'Фолбэк — если провайдер недоступен или ответил ошибкой, запрос автоматически уходит к следующему.', en: 'Fallback: if a provider is down or returns an error, the request automatically goes to the next one.' },
+    routing: { ru: 'Роутинг по цене и качеству — простые запросы идут в дешёвую модель, сложные — в сильную.', en: 'Cost/quality routing: simple requests go to a cheap model, hard ones to a strong one.' },
+    compression: { ru: 'Сжатие контекста — длинную историю ужимают до сути, чтобы уместиться в окно модели и не платить за лишнее.', en: 'Context compression: a long history is condensed to the essentials to fit the model window and avoid paying for extra tokens.' },
+    orchestrator: { ru: 'Оркестратор — раздаёт работу агентам, следит за порядком шагов и за тем, что каждый шаг вернул.', en: 'The orchestrator hands work to agents, keeps the steps in order and checks what each step returned.' },
+    contract: { ru: 'Типизированный контракт — схема того, что шаг принимает и что отдаёт. Несовпадение ловится сразу, а не через три шага.', en: 'A typed contract is a schema of what a step takes and returns. A mismatch is caught at once, not three steps later.' },
+    retry: { ru: 'Повтор — шаг, упавший на временной ошибке (сеть, лимит), запускается заново с теми же входными данными.', en: 'Retry: a step that failed on a transient error (network, rate limit) is run again with the same input.' },
+    agent: { ru: 'Агент — модель с ролью, инструкцией и инструментами. Отвечает за один шаг: спланировать, сгенерировать, проверить.', en: 'An agent is a model with a role, instructions and tools. It owns one step: plan, generate, check.' },
+    tools: { ru: 'Инструменты — то, что агент может вызвать помимо модели: API, база данных, файлы.', en: 'Tools are what an agent can call besides the model: an API, a database, files.' },
+    approval: { ru: 'Точка одобрения — конвейер останавливается и ждёт решения человека, прежде чем идти дальше или отдать результат.', en: 'Approval point: the pipeline stops and waits for a person’s decision before moving on or releasing the result.' },
+    step: { ru: 'Шаг — одна единица работы конвейера с понятным входом и выходом.', en: 'A step is one unit of pipeline work with a clear input and output.' },
+    boundary: { ru: 'Граница шага — единственное место, где данные проверяются по схеме. Дальше проходит только то, что прошло проверку.', en: 'A step boundary is the one place where data is validated against a schema. Only what passes goes further.' },
+    auto: { ru: 'Автоматический шаг выполняется без участия человека, потому что ошибку здесь дёшево заметить и исправить.', en: 'An automatic step runs with no human involved, because a mistake here is cheap to notice and fix.' },
+    cost: { ru: 'Цена ошибки — сколько стоит откатить или переделать результат шага. Где она высокая, ставят человека.', en: 'Cost of error: what it takes to roll back or redo a step’s result. Where it is high, a human is put in the loop.' },
+    dicom: { ru: 'DICOM — стандартный формат медицинских снимков: пиксели плюс метаданные исследования (аппарат, серия, пациент).', en: 'DICOM is the standard format for medical images: pixels plus study metadata (device, series, patient).' },
+    preprocess: { ru: 'Предобработка — снимок приводят к единому виду: размер, ориентация, диапазон яркости. Модель всегда видит одинаковый вход.', en: 'Preprocessing normalises the image: size, orientation, intensity range. The model always sees the same kind of input.' },
+    windowing: { ru: 'Окно яркости — из широкого диапазона значений снимка выбирают ту полосу, где видна нужная ткань.', en: 'Windowing picks, out of the image’s wide intensity range, the band where the tissue of interest is visible.' },
+    inference: { ru: 'Inference — обученную модель применяют к новому снимку и получают результат: маску, класс, число.', en: 'Inference: a trained model is applied to a new image and yields a result — a mask, a class, a number.' },
+    onnx: { ru: 'ONNX — переносимый формат модели: одна и та же сеть запускается на разном железе без переобучения.', en: 'ONNX is a portable model format: the same network runs on different hardware without retraining.' },
+    service: { ru: 'Сервис — предобработка и inference упакованы в отдельный процесс в контейнере; его запускают и обновляют отдельно от остального.', en: 'A service: preprocessing and inference packaged as a separate containerised process, run and updated on its own.' },
+    viewer: { ru: 'Просмотрщик — настольное приложение, где врач видит снимок и поверх него результат модели.', en: 'The viewer is a desktop application where the clinician sees the image with the model’s result on top.' },
+    presentation: { ru: 'Presentation — HTTP-эндпоинты и схемы запросов и ответов: как система выглядит снаружи.', en: 'Presentation: HTTP endpoints and request/response schemas — how the system looks from outside.' },
+    application: { ru: 'Application — сценарии использования: что сделать по запросу, шаг за шагом, без деталей хранения.', en: 'Application: use cases — what to do for a request, step by step, without storage details.' },
+    domain: { ru: 'Domain — сущности и правила предметной области. Не знает ни о базе, ни о HTTP, ни о фреймворках.', en: 'Domain: entities and business rules. Knows nothing about the database, HTTP or frameworks.' },
+    infrastructure: { ru: 'Infrastructure — конкретные реализации: база данных, брокер очередей, кэш, миграции.', en: 'Infrastructure: concrete implementations — the database, the message broker, the cache, migrations.' },
+    dependency: { ru: 'Правило зависимостей — внешние слои знают о внутренних, внутренние о внешних нет. Ядро можно тестировать без базы.', en: 'The dependency rule: outer layers know about inner ones, never the reverse. The core can be tested without a database.' },
+    workers: { ru: 'Воркеры — отдельные процессы: берут задачи из очереди и выполняют те же сценарии, но вне HTTP-запроса.', en: 'Workers are separate processes: they take jobs from the queue and run the same use cases, but outside an HTTP request.' },
+    migrations: { ru: 'Миграции — версионированные изменения схемы базы; применяются по порядку и откатываются.', en: 'Migrations are versioned changes to the database schema; applied in order and reversible.' },
+    ci: { ru: 'CI — тесты и проверки запускаются на каждое изменение автоматически, до слияния.', en: 'CI: tests and checks run automatically on every change, before it is merged.' }
+  };
+  const tip = document.createElement('div'); tip.id = 'tip'; tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
+  let cur = null;
+  const lang = () => document.documentElement.dataset.lang === 'en' ? 'en' : 'ru';
+  function show(node) {
+    const t = TIPS[node.dataset.tip]; if (!t) return;
+    if (cur && cur !== node) cur.classList.remove('is-on');
+    cur = node; node.classList.add('is-on');
+    tip.textContent = t[lang()]; tip.style.display = 'block';
+    const r = node.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = r.left + r.width / 2 - tw / 2; x = Math.max(8, Math.min(x, window.innerWidth - tw - 8));
+    let y = r.bottom + 8; if (y + th > window.innerHeight - 8) y = r.top - th - 8;
+    tip.style.left = (x + window.scrollX) + 'px'; tip.style.top = (y + window.scrollY) + 'px';
+  }
+  function hide() { if (cur) cur.classList.remove('is-on'); cur = null; tip.style.display = 'none'; }
+  document.querySelectorAll('.fig .node').forEach(n => {
+    n.setAttribute('tabindex', '0'); n.setAttribute('role', 'button');
+    let pt = 'mouse';
+    n.addEventListener('pointerdown', e => { pt = e.pointerType || 'mouse'; });
+    n.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') show(n); });
+    n.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hide(); });
+    n.addEventListener('click', e => { e.stopPropagation(); if (pt === 'mouse') { show(n); return; } if (cur === n) hide(); else show(n); });
+    n.addEventListener('focus', () => { try { if (n.matches(':focus-visible')) show(n); } catch {} });
+    n.addEventListener('blur', hide);
+    n.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (cur === n) hide(); else show(n); } });
+  });
+  document.addEventListener('click', hide);
+  window.addEventListener('scroll', hide, { passive: true });
+  window.addEventListener('resize', hide);
+  window.__tipRefresh = () => { if (cur) show(cur); };
+})();
+(function () {
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if (!('IntersectionObserver' in window) || !secs.length) return;
+  const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id)); }); }, { rootMargin: '-30% 0px -60% 0px' });
+  secs.forEach(s => io.observe(s));
 })();
 </script>
 </body>
